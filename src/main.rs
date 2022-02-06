@@ -1,4 +1,5 @@
 use std::env;
+use std::error::Error;
 use std::fs;
 use std::process;
 
@@ -17,9 +18,15 @@ fn main() {
 
     println!("No arquivo {}", config.filename);
 
-    let contents = fs::read_to_string(config.filename).expect("Algo errado na leitura do arquivo.");
+    run(config);
+}
+
+fn run(config: Config) -> Result<(), Box<dyn Error>> {
+    let contents = fs::read_to_string(config.filename)?;
 
     println!("Existe o conteúdo:\n{}", contents);
+
+    Ok(())
 }
 
 struct Config {
