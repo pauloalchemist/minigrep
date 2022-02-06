@@ -4,20 +4,28 @@ use std::fs;
 fn main() {
     let args: Vec<String> = env::args().collect();
 
-    let (query, filename) = parse_config(&args);
+    let config = parse_config(&args);
 
-    println!("Pesquisando por {} no arquivo {}.", query, filename);
+    println!(
+        "Pesquisando por {} no arquivo {}.",
+        config.query, config.filename
+    );
 
-    println!("No arquivo {}", filename);
+    println!("No arquivo {}", config.filename);
 
-    let contents = fs::read_to_string(filename).expect("Algo errado na leitura do arquivo.");
+    let contents = fs::read_to_string(config.filename).expect("Algo errado na leitura do arquivo.");
 
     println!("Existe o conteúdo:\n{}", contents);
 }
 
-fn parse_config(args: &[String]) -> (&str, &str) {
-    let query = &args[1];
-    let filename = &args[2];
+struct Config {
+    query: String,
+    filename: String,
+}
 
-    (query, filename)
+fn parse_config(args: &[String]) -> Config {
+    let query = args[1].clone();
+    let filename = args[2].clone();
+
+    Config { query, filename }
 }
